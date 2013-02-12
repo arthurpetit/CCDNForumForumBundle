@@ -113,13 +113,21 @@ class LoadForumData extends AbstractFixture implements OrderedFixtureInterface, 
     public function load(ObjectManager $manager)
     {
         $referencedUserAdmin = $this->getReference($this->container->getParameter('ccdn_forum_forum.fixtures.user_admin'));
-
+        $post=null;
+        
+        try {
+        	$post = $this->container->get('ccdn_forum_forum.repository.post')->findAll();
+        	
+        	$post = $post ? $post[0]:null;
+        	
+        }catch(Exception $e){}
+        
         if (null == $this->checkCategory('General')) {
             $categoryGeneral = $this->createCategory('General', 0);
 
             $manager->persist($categoryGeneral);
             $manager->flush();
-
+			
             if (null == $this->checkBoard('Introductions')) {
                 $boardIntroductions = $this->createBoard($categoryGeneral, 0, 'Introductions', 'Say hello and introduce yoursel!' . "\n" . 'Tell us a little about yourself.');
                 $topic = $this->createTopic($boardIntroductions, 'Welcome to CCDNForum.');
@@ -138,9 +146,12 @@ class LoadForumData extends AbstractFixture implements OrderedFixtureInterface, 
                 $manager->persist($topic, $boardIntroductions);
                 $manager->flush();
 
-                $this->addReference('forum-post', $post);
+                
             }
+            
         }
+        
+        $this->addReference('forum-post', $post);
     }
 
 	/**
