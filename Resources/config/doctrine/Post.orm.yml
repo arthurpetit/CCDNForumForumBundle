@@ -32,7 +32,18 @@ CCDNForum\ForumBundle\Entity\Post:
             type: datetime
             name: locked_date
             nullable: true
+            
+    #oneToMany:
+    #    quotedChildren:
+    #      targetEntity: CCDNForum\ForumBundle\Entity\Post
+    #      mappedBy: quotedParent
+          
     manyToOne:
+        
+    #    quotedParent:
+    #        targetEntity: CCDNForum\ForumBundle\Entity\Post
+    #        inversedBy: quotedChildren
+    
         topic:
             targetEntity: CCDNForum\ForumBundle\Entity\Topic
             cascade: ["persist"]
@@ -41,6 +52,7 @@ CCDNForum\ForumBundle\Entity\Post:
                 name: fk_topic_id
                 referencedColumnName: id
                 onDelete: SET NULL
+            
         createdBy:
             targetEntity: Symfony\Component\Security\Core\User\UserInterface
             cascade: ["persist"]

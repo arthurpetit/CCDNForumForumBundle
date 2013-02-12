@@ -72,6 +72,7 @@ class PostCreateFormHandler
      */
     public function setDefaultValues(array $defaults = null)
     {
+    	
         $this->defaults = array_merge($this->defaults, $defaults);
 
         return $this;
@@ -122,8 +123,8 @@ class PostCreateFormHandler
 
             $post = new Post();
             $post->setTopic($this->defaults['topic']);
-
-            $postType = $this->container->get('ccdn_forum_forum.form.type.post');
+            $postType = $this->container->get('ccdn_forum_forum.form.type.post')
+            				 ->setDefaultValues($this->defaults);
             $this->form = $this->factory->create($postType, $post);
         }
 

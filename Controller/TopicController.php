@@ -217,14 +217,12 @@ class TopicController extends BaseController
         //
         // Set the form handler options
         //
-        if ( ! empty($quoteId)) {
-            $quote = $this->container->get('ccdn_forum_forum.repository.post')->find($quoteId);
-        }
-
-        $options = array('topic' => $topic,	'user' => $user, 'quote' => (empty($quote) ? null : $quote));
-
+        
+        $quote = $quoteId ? $this->container->get('ccdn_forum_forum.repository.post')->find($quoteId) : null;
+        $options = array('topic' => $topic,	'user' => $user, 'quote' => $quote);
+        
         $formHandler = $this->container->get('ccdn_forum_forum.form.handler.post_create')->setDefaultValues($options);
-
+        
 		// Flood Control.
 		if ( ! $this->container->get('ccdn_forum_forum.component.flood_control')->isFlooded()) {
 	        if (isset($_POST['submit_post'])) {
@@ -264,6 +262,7 @@ class TopicController extends BaseController
             'user' => $user,
             'crumbs' => $crumbs,
             'topic' => $topic,
+        	//'quote' => $quote,
             //'preview' => $formHandler->getForm()->getData(),
             'form' => $formHandler->getForm()->createView(),
         ));

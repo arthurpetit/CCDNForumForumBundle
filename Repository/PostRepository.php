@@ -25,7 +25,7 @@ use Pagerfanta\Pagerfanta;
  */
 class PostRepository extends EntityRepository
 {
-
+	
     /**
      *
      * @access public
