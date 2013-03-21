@@ -35,14 +35,13 @@ class SubscriptionManager extends BaseManager implements ManagerInterface
     public function subscribe($topicId, $user)
     {
         $subscription = $this->container->get('ccdn_forum_forum.repository.subscription')->findTopicSubscriptionByTopicAndUserId($topicId, $user->getId());
-
+        $topic = $this->container->get('ccdn_forum_forum.repository.topic')->findOneById($topicId);
+        
         if (! $subscription) {
-            $topic = $this->container->get('ccdn_forum_forum.repository.topic')->findOneById($topicId);
-
+        	
             if (! $topic) {
                 $this->container->get('session')->setFlash('notice', $this->container->get('translator')->trans('ccdn_forum_forum.flash.subscription.topic.not.found', array(), 'CCDNForumForumBundle'));
-
-                return $this;
+		        return $this;
             }
 
             $subscription = new Subscription();
